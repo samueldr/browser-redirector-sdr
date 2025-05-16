@@ -174,6 +174,13 @@ async function importSettings() {
 
   const {opts, extras} = await _getData();
   let data = prompt('Input the exported settings data below. Note that this will overwrite anything currently on the page');
+  
+  // User cancellation bails out
+  // Otherwise `JSON.parse(null) == null`, which obliterates current settings.
+  if (data == null) {
+    return;
+  }
+
   try {
     data = JSON.parse(data);
   } catch (e) {
